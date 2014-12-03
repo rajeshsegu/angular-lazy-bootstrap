@@ -3,46 +3,48 @@
 
 <head>
     <title>Lazy Bootstrap Demo</title>
-    <style>
-        #error {
-            display: none;
-        }
-        .lazy-bootstrap-loading #error {
-            display: block !important;
-            background: red;
-        }
-    </style>
 </head>
 
 <body>
 
-    <div id="error" style="display: none;">
-        Could not load configuration!
-    </div>
+<div id="loading" style="display: none;">
+    Loading...
+</div>
 
-    <div ng-controller="AppController" ng-cloak>
-        Value: {{ value }}
-    </div>
+<div id="error" style="display: none;">
+    Could not load configuration!
+</div>
 
-    <script src="../lib/jquery/jquery.js"></script>
-    <script src="../lib/angular/angular.js"></script>
-    <script src="../src/bootstrap.js"></script>
-    <script>
+<div ng-controller="AppController" ng-cloak>
+    Value: {{ value }}
+</div>
 
-        window.app = {};
+<script src="../lib/jquery/jquery.js"></script>
+<script src="../lib/angular/angular.js"></script>
+<script src="../src/bootstrap.js"></script>
+<script>
 
-        angular.lazy()
-                .resolve(['$http', function ($http) {
-                    return $http.get('/demo/api/config.json')
-                            .then(function (resp) {
-                                window.app.config = resp.data;
-                            }, function (err){
-                                 angular.element('#error').show();
-                            });
-                }])
-                .bootstrap("demoApp");
+    window.app = {};
 
-        angular.module('demoApp', [])
+    angular.lazy("demoApp")
+            .resolve(['$http', function ($http) {
+                return $http.get('/demo/api/config.json')
+                        .then(function (resp) {
+                            window.app.config = resp.data;
+                        });
+            }])
+            .loading(function(){
+                angular.element('#loading').show();
+            })
+            .error(function(){
+                angular.element('#error').show();
+            })
+            .done(function() {
+                angular.element('#loading').hide();
+            })
+            .bootstrap();
+
+    angular.module('demoApp', [])
             .config(function () {
                 console.log('in config(): ' + JSON.stringify(window.app.config));
             })
@@ -52,7 +54,7 @@
             .controller('AppController', function ($scope) {
                 $scope.value = window.app.config.name;
             });
-    </script>
+</script>
 </body>
 
 </html>

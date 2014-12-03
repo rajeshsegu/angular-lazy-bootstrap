@@ -3,18 +3,13 @@
 
 <head>
     <title>Lazy Bootstrap Demo</title>
-    <style>
-        #error {
-            display: none;
-        }
-        .lazy-bootstrap-loading #error {
-            display: block !important;
-            background: red;
-        }
-    </style>
 </head>
 
 <body>
+
+<div id="loading" style="display: none;">
+    Loading...
+</div>
 
 <div id="error" style="display: none;">
     Could not load configuration!
@@ -32,7 +27,7 @@
 
     window.app = {};
 
-    angular.lazy()
+    angular.lazy("demoApp")
             .resolve(['$http', function ($http) {
                 return $http.get('/demo/api/config.json')
                         .then(function (resp) {
@@ -57,7 +52,16 @@
                 }, 2000);
                 return deferred.promise;
             }])
-            .bootstrap("demoApp");
+            .loading(function(){
+                angular.element('#loading').show();
+            })
+            .error(function(){
+                angular.element('#error').show();
+            })
+            .done(function() {
+                angular.element('#loading').hide();
+            })
+            .bootstrap();
 
     angular.module('demoApp', [])
             .config(function () {

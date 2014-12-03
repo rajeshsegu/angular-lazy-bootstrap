@@ -5,6 +5,9 @@
     //Generic   
 
     function makeArray(arr) {
+        if(!arr){
+            return [];
+        }
         return angular.isArray(arr) ? arr : [arr];
     }
 
@@ -26,44 +29,53 @@
         return angular.injector(modules);
     }
 
-    var _injector;
-    function getInjector() {
-        if (!_injector) {
-            _injector = createInjector(["ng"]);
-        }
-        return _injector;
-    }
-
     function bootstrapApplication(angularApp) {
         angular.element(document).ready(function () {
             angular.bootstrap(document, [angularApp]);
         });
     }
 
-    angular.lazy = function () {
+    angular.lazy = function (app, modules) {
 
-        console.log('angular.lazy called');
-
-        var injector = getInjector(),
+        var injector = createInjector(modules),
             $q = injector.get('$q'),
-            promises = [];
+            promises = [],
+            errorCallback = angular.noop,
+            loadingCallback = angular.noop,
+            doneCallback = angular.noop;
 
         return {
 
             resolve: function (promise) {
-                console.log('Resolve added');
                 promise = $q.when(injector.instantiate(promise));
                 promises.push(promise);
                 return this;
             },
 
-            bootstrap: function (angularApp) {
-                console.log('Bootstrap called');
-                $q.all(promises).then(function () {
-                    bootstrapApplication(angularApp)
-                }, function () {
-                    alert('Error bootstraping Angular app.');
-                });
+            bootstrap: function () {
+
+                loadingCallback();
+
+                return $q.all(promises)
+                    .then(function () {
+                        bootstrapApplication(app)
+                    }, errorCallback)
+                    .finally(doneCallback);
+            },
+
+            loading: function(callback){
+                loadingCallback = callback;
+                return this;
+            },
+
+            done: function(callback){
+                doneCallback = callback;
+                return this;
+            },
+
+            error: function(callback){
+                errorCallback = callback;
+                return this;
             }
         }
 
