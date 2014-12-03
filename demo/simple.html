@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lazy Bootstrap Demo</title>
+    <style>
+        #error {
+            display: none;
+        }
+        .lazy-bootstrap-loading #error {
+            display: block !important;
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="error" style="display: none;">
+        Could not load configuration!
+    </div>
+
+    <div ng-controller="AppController" ng-cloak>
+        Value: {{ value }}
+    </div>
+
+    <script src="../lib/jquery/jquery.js"></script>
+    <script src="../lib/angular/angular.js"></script>
+    <script src="../src/bootstrap.js"></script>
+    <script>
+
+        window.app = {};
+
+        angular.lazy()
+                .resolve(['$http', function ($http) {
+                    return $http.get('/demo/api/config.json')
+                            .then(function (resp) {
+                                window.app.config = resp.data;
+                            }, function (err){
+                                 angular.element('#error').show();
+                            });
+                }])
+                .bootstrap("demoApp");
+
+        angular.module('demoApp', [])
+            .config(function () {
+                console.log('in config(): ' + JSON.stringify(window.app.config));
+            })
+            .run(function () {
+                console.log('in run(): ' + JSON.stringify(window.app.config));
+            })
+            .controller('AppController', function ($scope) {
+                $scope.value = window.app.config.name;
+            });
+    </script>
+</body>
+
+</html>
