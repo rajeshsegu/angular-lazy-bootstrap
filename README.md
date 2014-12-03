@@ -90,3 +90,24 @@ This framework allows you to tap into different states during initializing the a
 
 ```done()```   : Gives control once the app is initialized
 
+### DEMO
+
+I have included a node webserver to make this easy to try:
+
+```
+git clone https://github.com/rajeshsegu/angular-lazy-bootstrap.git
+npm install
+node webserver.js
+[ access server at http://localhost:5050/ ]
+```
+You can try out working samples at:
+
+```Simple Case```   : http://localhost:5050/demo/simple.html
+
+```Multi Case```    : http://localhost:5050/demo/multi.html
+
+```Error Case```    : http://localhost:5050/demo/error.html
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT) © Rajesh Segu
