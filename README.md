@@ -1,5 +1,6 @@
 angular-lazy-bootstrap
 ======================
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rajeshsegu/angular-lazy-bootstrap?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This framework helps to lazy bootstrap any given Angular application. This would help any single page web application to ideally load the initial configuration, global variables, server flags and UI flags before initializing the UI.
 
