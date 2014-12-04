@@ -10,7 +10,7 @@
 
     // Enforcing
     "bitwise"       : true,     // true: Prohibit bitwise operators (&, |, ^, etc.)
-    "camelcase"     : true,    // true: Identifiers must be in camelCase
+    "camelcase"     : false,    // true: Identifiers must be in camelCase
     "curly"         : true,     // true: Require {} for every new block or scope
     "eqeqeq"        : true,     // true: Require triple equals (===) for comparison
     "forin"         : true,     // true: Require filtering for..in loops with obj.hasOwnProperty()
@@ -69,7 +69,7 @@
     "couch"         : false,    // CouchDB
     "devel"         : true,     // Development/debugging (alert, confirm, etc)
     "jquery"        : true,    // jQuery
-    "node"          : false,    // Node.js
+    "node"          : true,    // Node.js
     "nonstandard"   : false,    // Widely adopted globals (escape, unescape, etc)
     "rhino"         : false,    // Rhino
     "worker"        : false,    // Web Workers
@@ -102,7 +102,10 @@
         "waitsFor": true,
         "module" : true,
         "afterEach": true,
-        "beforeEach": true
+        "beforeEach": true,
+
+        //Grunt Global
+        "__dirname": true
 
     }
 }

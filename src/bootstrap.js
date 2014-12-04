@@ -58,7 +58,7 @@
 
                 return $q.all(promises)
                     .then(function () {
-                        bootstrapApplication(app)
+                        bootstrapApplication(app);
                     }, errorCallback)
                     .finally(doneCallback);
             },
@@ -77,8 +77,8 @@
                 errorCallback = callback;
                 return this;
             }
-        }
+        };
 
-    }
+    };
 
 })(angular);
