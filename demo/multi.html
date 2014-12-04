@@ -27,7 +27,7 @@
 
     window.app = {};
 
-    angular.lazy("demoApp")
+        angular.lazy("demoApp")
             .resolve(['$http', function ($http) {
                 return $http.get('/demo/api/config.json')
                         .then(function (resp) {
