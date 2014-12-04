@@ -10,6 +10,6 @@ before_install:
 install:
   npm install
 
-after_install:
+before_script:
   grunt default
 
