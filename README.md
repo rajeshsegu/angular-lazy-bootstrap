@@ -59,6 +59,32 @@ In this code sample, ```demoApp``` would be lazily initialized once resolve each
 
 **Note** You can handle errors individually per promise or globally ( below example )
 
+### Error Case
+
+```js
+
+angular.lazy("demoApp")
+  .resolve(['$q', '$timeout', function ($q, $timeout) {
+       var deferred = $q.defer();
+       $timeout(function () {
+           deferred.reject('EXCEPTION');
+       }, 2000);
+       return deferred.promise;
+    }])
+   .loading(function(){
+       angular.element('#loading').show();
+   })
+   .error(function(){
+       angular.element('#error').show();
+   })
+   .done(function() {
+       angular.element('#loading').hide();
+   })
+   .bootstrap();
+
+```
+In this code sample, ```demoApp``` would not load since the promise is rejected. We have an ```error()``` handler that gives UI a chance to handle error initializing the app or to start a new flow.
+
 ### More Control 
 
 ```js
