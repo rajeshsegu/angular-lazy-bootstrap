@@ -54,13 +54,25 @@ module.exports = function (grunt) {
                     '<%= build_dir %>/bootstrap.min.js': '<%= files.core %>'
                 }
             }
+        },
+
+        karma: {
+            'unit': {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS']
+            }
         }
 
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('default', ['jshint:all', 'uglify:core']);
+    grunt.registerTask('process', ['jshint:all', 'uglify:core']);
+    grunt.registerTask('test', ['karma:unit']);
+
+    grunt.registerTask('default', ['process', 'test']);
 
 };
