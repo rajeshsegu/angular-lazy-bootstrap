@@ -2,7 +2,7 @@
 
     'use strict';
 
-    //Generic   
+    //Generic
 
     function makeArray(arr) {
         if(!arr){
@@ -29,9 +29,9 @@
         return angular.injector(modules);
     }
 
-    function bootstrapApplication(angularApp) {
+    function bootstrapApplication(angularApp, element) {
         angular.element(document).ready(function () {
-            angular.bootstrap(document, [angularApp]);
+            angular.bootstrap(element || document, [angularApp]);
         });
     }
 
@@ -52,13 +52,13 @@
                 return this;
             },
 
-            bootstrap: function () {
+            bootstrap: function (element) {
 
                 loadingCallback();
 
                 return $q.all(promises)
                     .then(function () {
-                        bootstrapApplication(app);
+                        bootstrapApplication(app, element);
                     }, errorCallback)
                     .finally(doneCallback);
             },

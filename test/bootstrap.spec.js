@@ -60,6 +60,31 @@ describe('lazyBootstrap', function () {
 
     });
 
+    it('should bootstrap the application at specified element', function(done){
+
+        window.appConfig = {};
+        var rootElement = angular.element('<div></div>');
+
+        angular.lazy('demoApp')
+            .resolve(['$q', '$timeout', function ($q, $timeout) {
+                var deferred = $q.defer();
+                $timeout(function () {
+                    window.appConfig.const = 'My Constant';
+                    deferred.resolve();
+                }, 2000);
+                return deferred.promise;
+            }])
+            .bootstrap();
+
+        angular.module('demoApp', [])
+            .config(function () {
+                expect(window.appConfig).toEqual({const: 'My Constant'});
+                rootElement.remove();
+                done();
+            });
+
+    });
+
     it('should bootstrap the application with various hooks', function(done){
 
         window.app = {};
